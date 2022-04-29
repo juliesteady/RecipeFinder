@@ -1,0 +1,129 @@
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  
+  </head>
+  <body>
+    <div id="app">
+    <v-app>
+      <v-app-bar style="background-color: #293d3d" app>
+        <v-toolbar-title style="color: white">Recipe Finder</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-app-bar>
+      <v-main style="background-color: #94b8b8">
+        <v-spacer></v-spacer>
+        <v-layout class="pa-10" class="flex-wrap justify-center">
+            <v-spacer></v-spacer>
+            <v-app-bar-nav-icon></v-app-bar-nav-icon>
+            <v-toolbar-title></v-toolbar-title>
+            <v-text-field
+                hide-details 
+                label="Search by Ingredient" 
+                placeholder="Search" 
+                filled 
+                rounded 
+                dense 
+                single-line 
+                append-icon="mdi-magnify" v-model="food" class="shrink mx-4" @keyup.enter="addFood" clearable style="background-color: white">
+            </v-text-field>
+            <v-btn style="background-color: #3d5c5c" class="white--text" @click="addFood">addFood</v-btn>
+            <v-spacer></v-spacer>
+            <!--<v-btn rounded class="ml-auto">Button 1</v-btn>
+            <v-btn icon>
+                <v-icon></v-icon>
+            </v-btn>
+            <v-btn icon>
+                <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn> -->
+        </v-layout>
+        <v-row class="flex-wrap justify-center">
+            <v-btn style="background-color: #3d5c5c" class="white--text" @click="searchFor">Submit</v-btn>
+    
+            </v-row>
+        <v-layout class="pa-10 d-flex flex-wrap">
+            <v-spacer></v-spacer>
+                <ingredient_list v-for="(data,index) in ingredient" :title='data.title' :index=index></ingredient_list>
+            <v-spacer></v-spacer>
+
+        </v-layout>
+        <v-row class="flex-wrap justify-center">
+        <v-btn style="background-color: #3d5c5c" class="white--text" @click="clearAll">Clear</v-btn>
+
+        </v-row>
+        <v-layout class="pa-10 d-flex flex-wrap">   <!--"flex-wrap justify-center"-->
+            <search_results v-for="(item,index) in searchResults" :itemData=item :index=index></search_results>
+        </v-layout>
+        <!--<v-layout class="pa-10" class="flex-wrap justify-center"> 
+                <v-card width="400px" height="300px" class="d-flex flex-column" style="background-color: #3d5c5c">
+                    <router-link to="/"><v-img height="250px" style="background-color: #3d5c5c" class="white--text" src="photos/lemoncod.jpg"></v-img>
+                        <v-card-title class="text-h6 white--text">Lemon Garlic Cod</v-card-title>
+                    </router-link>
+                        //This should be commented out<--<v-btn height="250px" style="background-color: #3d5c5c" class="white--text" @click="goToRecipe">
+                            <v-spacer></v-spacer>
+                            <v-card-title>Recipe Title</v-card-title></v-btn> -> //comment end
+                </v-card>
+            <v-spacer></v-spacer>
+            <v-card width="400px" height="300px" class="d-flex flex-column" style="background-color: #3d5c5c">
+                <router-link to="/"><v-img height="250px" style="background-color: #3d5c5c" class="white--text" src="photos/paella.jpg">
+                </v-img>
+                <v-card-title class="text-h6 white--text">Seafood Paella</v-card-title>
+                </router-link>
+                    //This should be commented out<--<v-btn height="250px" style="background-color: #3d5c5c" class="white--text" @click="goToRecipe">
+                        <v-spacer></v-spacer>
+                        <v-card-title>Recipe Title</v-card-title></v-btn> -> //comment end
+                </v-card>
+            <v-spacer></v-spacer>
+            <v-card width="400px" height="300px" class="d-flex flex-column" style="background-color: #3d5c5c">
+                <router-link to="/"><v-img height="250px" style="background-color: #3d5c5c" class="white--text" src="photos/brie.jpg"></v-img>
+                    <v-card-title class="text-h6 white--text">Baked Brie with Pecans</v-card-title>
+                </router-link>
+                    //This should be commented out<--<v-btn height="250px" style="background-color: #3d5c5c" class="white--text" @click="goToRecipe">
+                        <v-spacer></v-spacer>
+                        <v-card-title>Recipe Title</v-card-title></v-btn> ->   //comment end
+                </v-card>
+        </v-layout>
+
+        <v-layout class="pa-10" class="flex-wrap justify-center"> 
+            <v-card width="400px" height="300px" class="d-flex flex-column" style="background-color: #3d5c5c">
+                <router-link to="/"><v-img height="250px" style="background-color: #3d5c5c" class="white--text" src="photos/gemsalad.jpg"></v-img>
+                    <v-card-title class="text-h6 white--text">Gem Salad</v-card-title>
+                </router-link>
+                    //This should be commented out<--<v-btn height="250px" style="background-color: #3d5c5c" class="white--text" @click="goToRecipe">
+                        <v-spacer></v-spacer>
+                        <v-card-title>Recipe Title</v-card-title></v-btn> ->   //comment end
+                </v-card>
+        <v-spacer></v-spacer>
+        <v-card width="400px" height="300px" class="d-flex flex-column" style="background-color: #3d5c5c">
+            <router-link to="/"><v-img height="250px" style="background-color: #3d5c5c" class="white--text" src="photos/hgarlicsalmon.jpg"></v-img>
+                <v-card-title class="text-h6 white--text">Honey Garlic Salmon</v-card-title>
+            </router-link>
+                //This should be commented out<--<v-btn height="250px" style="background-color: #3d5c5c" class="white--text" @click="goToRecipe">
+                    <v-spacer></v-spacer>
+                    <v-card-title>Recipe Title</v-card-title></v-btn> ->   //comment end
+            </v-card>
+        <v-spacer></v-spacer>
+        <v-card width="400px" height="300px" class="d-flex flex-column" style="background-color: #3d5c5c">
+            <router-link to="/"><v-img height="250px" style="background-color: #3d5c5c" class="white--text" src="photos/bsquashsoup.jpg"></v-img>
+                <v-card-title class="text-h6 white--text">Butternut Squash Soup</v-card-title>
+            </router-link>
+            //This should be commented out<--<v-btn height="250px" style="background-color: #3d5c5c" class="white--text" @click="goToRecipe">
+                <v-spacer></v-spacer>
+                <v-card-title>Recipe Title</v-card-title></v-btn> ->   //comment end
+            </v-card>
+    </v-layout> -->
+
+
+    <v-spacer></v-spacer>
+      </v-main>
+    </v-app>
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+  </html>
